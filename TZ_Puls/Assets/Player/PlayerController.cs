@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class PlayerController : Singleton<PlayerController>
 {
     private static readonly string PLATFORM = "Platform";
 
@@ -37,6 +37,18 @@ public class PlayerController : MonoBehaviour
     {
         _rb.position += Vector2.right * _speed * Time.deltaTime;
     }
+    public Vector3 GetPosition() => _rb.position;
+    private bool IsFloor() => transform.position.y < 0;
+    private bool IsGrounded()
+    {
+        var heightOffset = 0.1f;
+        var gravityDirection = IsFloor()
+            ? Vector2.down
+            : Vector2.up;
+        RaycastHit2D raycastHit = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size, 0f, gravityDirection, heightOffset, _platformMask);
+
+        return raycastHit.collider != null;
+    }
 
     private void SwitchGravity()
     {
@@ -50,8 +62,6 @@ public class PlayerController : MonoBehaviour
         _rb.gravityScale *= -1;
     }
 
-    private bool IsFloor() => transform.position.y < 0;
-
     private void Jump()
     {
         if (!IsGrounded())
@@ -59,17 +69,6 @@ public class PlayerController : MonoBehaviour
 
         var gravityDirection = IsFloor() ? 1 : -1;
         _rb.AddForce(new Vector2(0.0f, _jumpForce * gravityDirection));
-    }
-
-    private bool IsGrounded()
-    {
-        var heightOffset = 0.1f;
-        var gravityDirection = IsFloor()
-            ? Vector2.down
-            : Vector2.up;
-        RaycastHit2D raycastHit = Physics2D.BoxCast(_collider.bounds.center, _collider.bounds.size, 0f, gravityDirection, heightOffset, _platformMask);
-
-        return raycastHit.collider != null;
     }
 
     public void Unload()
