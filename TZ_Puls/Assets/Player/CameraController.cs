@@ -16,15 +16,16 @@ public class CameraController : MonoBehaviour
     public void Init(Transform followTarget)
     {
         target = followTarget;
-        _offset = new Vector3(target.position.x + 8.0f, 0.0f, -10f);
-        transform.position = _offset;
+        var targetPosOffest = new Vector3(target.position.x, 0.0f, -10f);
+        transform.position = targetPosOffest;
+        _offset = transform.position - targetPosOffest;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (target == null) return;
 
-        var targetPosition = new Vector3(target.position.x, 0.0f, -10f);
-        transform.position = targetPosition + _offset;
+        var targetPosOffset = new Vector3(target.position.x + 7.0f, 0.0f, -10f);
+        transform.position = targetPosOffset + _offset;
     }
 }

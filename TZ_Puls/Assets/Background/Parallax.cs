@@ -32,7 +32,7 @@ public class Parallax : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Vector2.Distance(_lastCameraPosition, _cam.transform.position) != 0)
             MoveParallax();
