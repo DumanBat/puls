@@ -6,15 +6,12 @@ public class BackgroundController : MonoBehaviour
     [SerializeField]
     private Parallax[] _parallaxes = new Parallax[5];
 
-    // TEMP
-    public void Start()
+    public void Init(Sprite[] sprites = null)
     {
-        Init(backgroundSprites);
-    }
-    ///
-    public void Init(Sprite[] sprites)
-    {
-        for (int i = 0; i < 5; i++)
+        if (sprites == null)
+            sprites = backgroundSprites;
+
+        for (int i = 0; i < transform.childCount; i++)
         {
             var background = transform.GetChild(i).GetComponent<Background>();
 

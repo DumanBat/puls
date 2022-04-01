@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlayerView : MonoBehaviour
 {
+    public Transform root;
+
     [SerializeField]
     private ProgressBar _progressBar;
 
